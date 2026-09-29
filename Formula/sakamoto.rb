@@ -1,8 +1,8 @@
 class Sakamoto < Formula
   desc "Mouse-friendly macOS sing-box TUI with Shadowrocket config import"
   homepage "https://github.com/pi-dal/sakamoto"
-  url "https://github.com/pi-dal/sakamoto/archive/refs/tags/v0.1.0.tar.gz"
-  sha256 "9f68b1347d45a7e6dc241af1fa8e77c095bf92826ee53a4a35825fa3068573fc"
+  url "https://github.com/pi-dal/sakamoto/archive/refs/tags/v0.2.0.tar.gz"
+  sha256 "b9d87f4ec578675270ea3429bfc0c7e016871b06d050176e45e5f6329c0b264e"
   license "GPL-3.0-or-later"
 
   depends_on "go@1.26" => :build
@@ -12,7 +12,8 @@ class Sakamoto < Formula
   def install
     system "go", "build", *std_go_args(output: bin/"sakamoto", ldflags: "-s -w"), "./cmd/sakamoto"
     system "codesign", "--force", "--sign", "-", bin/"sakamoto"
-    pkgshare.install "sakamoto.example.yaml", "nodes.example.txt", "scripts", "launchd"
+    pkgshare.install "sakamoto.example.yaml", "nodes.example.txt", "scripts", "launchd", "NOTICE.md"
+    pkgshare.install "docs/portrait-license.md"
   end
 
   def caveats
@@ -24,10 +25,12 @@ class Sakamoto < Formula
       This installer explicitly asks permission before adding launchd services.
       Existing legacy VPN sessions must be migrated separately; do not replace
       a running daemon. See #{pkgshare}/scripts/migrate-legacy.sh --check.
+      The About portrait's CC BY 2.0 credits are in #{pkgshare}/NOTICE.md and
+      #{pkgshare}/portrait-license.md.
     EOS
   end
 
   test do
-    assert_match "sakamoto 0.1.0", shell_output("#{bin}/sakamoto version")
+    assert_match "sakamoto 0.2.0", shell_output("#{bin}/sakamoto version")
   end
 end

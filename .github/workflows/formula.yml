@@ -5,11 +5,8 @@ on:
 
 jobs:
   install:
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [macos-15, macos-15-intel]
-    runs-on: ${{ matrix.os }}
+    runs-on: macos-15
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v5
       - name: Refresh Homebrew metadata (runner images can be stale)
@@ -28,3 +25,5 @@ jobs:
           sakamoto version
           test -f "$(brew --prefix)/share/sakamoto/scripts/install-macos.sh"
           test -f "$(brew --prefix)/share/sakamoto/launchd/dev.sakamoto.daemon.plist.in"
+          test -f "$(brew --prefix)/share/sakamoto/NOTICE.md"
+          test -f "$(brew --prefix)/share/sakamoto/portrait-license.md"

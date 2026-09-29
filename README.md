@@ -17,4 +17,6 @@ bash "$(brew --prefix)/share/sakamoto/scripts/install-macos.sh"
 
 The installer asks before creating a root launchd service. **Do not run it over an active legacy daemon.** Follow [the migration guide](https://github.com/pi-dal/sakamoto/blob/main/docs/migration.md) instead. Installing or upgrading the formula does not migrate existing services or reconnect their TUN.
 
-To upgrade later: `brew update && brew upgrade pi-dal/tap/sakamoto`. Formula builds from a versioned source archive using Homebrew's Go build dependency; sing-box is a runtime dependency. The tap publishes no user nodes, API credentials, or generated configurations.
+Current formula: **sakamoto v0.2.0**. To upgrade later: `brew update && brew upgrade pi-dal/tap/sakamoto`. It builds a versioned source archive with Homebrew's Go build dependency; sing-box is a runtime dependency. No user nodes, API credentials, or generated configurations are published. The separately licensed About portrait's credits are included in the installed `NOTICE.md` and `portrait-license.md`.
+
+**Platform status:** Apple Silicon installation is tested in clean macOS CI. Intel installation is not verified for this release: Homebrew currently has no Intel bottle for the required recent sing-box, and building that upstream dependency from source can take a very long time. Do not treat the macOS Intel path as tested.
