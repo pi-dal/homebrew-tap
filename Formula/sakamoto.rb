@@ -9,12 +9,6 @@ class Sakamoto < Formula
   depends_on :macos
   depends_on "sing-box"
 
-  deny_network_access!
-
-  def fetch
-    system "go", "mod", "download"
-  end
-
   def install
     system "go", "build", *std_go_args(output: bin/"sakamoto", ldflags: "-s -w"), "./cmd/sakamoto"
     system "codesign", "--force", "--sign", "-", bin/"sakamoto"

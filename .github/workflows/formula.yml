@@ -12,6 +12,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v5
+      - name: Refresh Homebrew metadata (runner images can be stale)
+        run: brew update
       - name: Tap checked-out formula
         run: brew tap --custom-remote pi-dal/tap "file://${{ github.workspace }}"
       - name: Audit and style
