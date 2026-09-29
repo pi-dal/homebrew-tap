@@ -1,5 +1,33 @@
 # pi-dal Homebrew tap
 
+Homebrew packages for pi-dal projects are maintained here rather than in the application repositories.
+
+| Project | Install | Platform |
+| --- | --- | --- |
+| [Agent Explorer](https://github.com/pi-dal/agent-explorer) | `brew install --cask pi-dal/tap/agent-explorer` | macOS Apple Silicon |
+| [VoicePi](https://github.com/pi-dal/VoicePi) | `brew install --cask pi-dal/tap/voicepi` | macOS 14+ |
+| [sakamoto](https://github.com/pi-dal/sakamoto) | `brew install pi-dal/tap/sakamoto` | macOS |
+
+The tap is added automatically on first install. For later updates, run `brew update && brew upgrade` (or specify the package). The casks use published release assets and their SHA-256 checksums; update them here when publishing new releases.
+
+## Agent Explorer
+
+Install the macOS Apple Silicon desktop app from [agent-explorer](https://github.com/pi-dal/agent-explorer):
+
+```bash
+brew install --cask pi-dal/tap/agent-explorer
+```
+
+The release is ad-hoc signed, not notarized; macOS may require **Open Anyway** in Privacy & Security on first launch. Intel macOS is not supported by this cask.
+
+## VoicePi
+
+Install the macOS 14+ menu-bar app from [VoicePi](https://github.com/pi-dal/VoicePi):
+
+```bash
+brew install --cask pi-dal/tap/voicepi
+```
+
 ## sakamoto
 
 A macOS terminal controller for [sing-box](https://github.com/SagerNet/sing-box), with Shadowrocket `.conf` import. Source, documentation, and license: [pi-dal/sakamoto](https://github.com/pi-dal/sakamoto).

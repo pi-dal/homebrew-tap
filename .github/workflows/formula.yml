@@ -1,4 +1,4 @@
-name: Homebrew formula
+name: Homebrew packages
 on:
   push:
   pull_request:
@@ -11,12 +11,12 @@ jobs:
       - uses: actions/checkout@v5
       - name: Refresh Homebrew metadata (runner images can be stale)
         run: brew update
-      - name: Tap checked-out formula
+      - name: Tap checked-out repository
         run: brew tap --custom-remote pi-dal/tap "file://${{ github.workspace }}"
       - name: Audit and style
         run: |
-          brew audit --strict pi-dal/tap/sakamoto
-          brew style pi-dal/tap/sakamoto
+          brew audit --strict pi-dal/tap/sakamoto pi-dal/tap/voicepi pi-dal/tap/agent-explorer
+          brew style pi-dal/tap/sakamoto pi-dal/tap/voicepi pi-dal/tap/agent-explorer
       - name: Install from source
         run: brew install --build-from-source pi-dal/tap/sakamoto
       - name: CLI and formula smoke tests
