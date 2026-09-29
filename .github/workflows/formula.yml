@@ -1,0 +1,28 @@
+name: Homebrew formula
+on:
+  push:
+  pull_request:
+
+jobs:
+  install:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-15, macos-15-intel]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v5
+      - name: Tap checked-out formula
+        run: brew tap --custom-remote pi-dal/tap "file://${{ github.workspace }}"
+      - name: Audit and style
+        run: |
+          brew audit --strict pi-dal/tap/sakamoto
+          brew style pi-dal/tap/sakamoto
+      - name: Install from source
+        run: brew install --build-from-source pi-dal/tap/sakamoto
+      - name: CLI and formula smoke tests
+        run: |
+          brew test pi-dal/tap/sakamoto
+          sakamoto version
+          test -f "$(brew --prefix)/share/sakamoto/scripts/install-macos.sh"
+          test -f "$(brew --prefix)/share/sakamoto/launchd/dev.sakamoto.daemon.plist.in"
