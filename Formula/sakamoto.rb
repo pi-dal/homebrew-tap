@@ -1,8 +1,8 @@
 class Sakamoto < Formula
   desc "Mouse-friendly macOS sing-box TUI with Shadowrocket config import"
   homepage "https://github.com/pi-dal/sakamoto"
-  url "https://github.com/pi-dal/sakamoto/archive/refs/tags/v0.2.4.tar.gz"
-  sha256 "5a29c40763326cc4c6f0c4f6926cbe22c363b9a1b72238d2d269fc8fecc5c493"
+  url "https://github.com/pi-dal/sakamoto/archive/refs/tags/v0.2.5.tar.gz"
+  sha256 "ccd49f0a2a9c7c20a4d2e19a45c409ab90593ea4b5f566fec36222928327fe3b"
   license "GPL-3.0-or-later"
 
   depends_on "go@1.26" => :build
@@ -13,12 +13,15 @@ class Sakamoto < Formula
     system "go", "build", *std_go_args(output: bin/"sakamoto", ldflags: "-s -w"), "./cmd/sakamoto"
     system "codesign", "--force", "--sign", "-", bin/"sakamoto"
     pkgshare.install "sakamoto.example.yaml", "nodes.example.txt", "scripts", "launchd", "NOTICE.md"
-    pkgshare.install "docs/portrait-license.md"
+    pkgshare.install "docs/portrait-license.md", "docs/dns-protection.md"
   end
 
   def caveats
     <<~EOS
-      No VPN or privileged launchd service was started.
+      No VPN or privileged launchd service was started; system DNS was not changed.
+      Protected DNS requires an explicit root-daemon upgrade/activation:
+        bash #{pkgshare}/scripts/enable-dns-guard.sh
+      Read #{pkgshare}/dns-protection.md before scheduling that reconnect.
       Optional iCloud rule-source sync uses include_conf: true; old nodes-only
       configurations are not expanded without explicit opt-in.
       Requires sing-box 1.14.2+ for native Global/Direct modes.
@@ -36,6 +39,6 @@ class Sakamoto < Formula
   end
 
   test do
-    assert_match "sakamoto 0.2.4", shell_output("#{bin}/sakamoto version")
+    assert_match "sakamoto 0.2.5", shell_output("#{bin}/sakamoto version")
   end
 end
