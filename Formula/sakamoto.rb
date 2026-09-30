@@ -1,8 +1,8 @@
 class Sakamoto < Formula
   desc "Mouse-friendly macOS sing-box TUI with Shadowrocket config import"
   homepage "https://github.com/pi-dal/sakamoto"
-  url "https://github.com/pi-dal/sakamoto/archive/refs/tags/v0.2.3.tar.gz"
-  sha256 "797c2f812c0b8e9ff64a40d8424ad3446e02660e07f311a3d66e244997ecf4d1"
+  url "https://github.com/pi-dal/sakamoto/archive/refs/tags/v0.2.4.tar.gz"
+  sha256 "5a29c40763326cc4c6f0c4f6926cbe22c363b9a1b72238d2d269fc8fecc5c493"
   license "GPL-3.0-or-later"
 
   depends_on "go@1.26" => :build
@@ -19,6 +19,8 @@ class Sakamoto < Formula
   def caveats
     <<~EOS
       No VPN or privileged launchd service was started.
+      Optional iCloud rule-source sync uses include_conf: true; old nodes-only
+      configurations are not expanded without explicit opt-in.
       Requires sing-box 1.14.2+ for native Global/Direct modes.
       Existing configs need regeneration and one planned reconnect to load mode
       rules. Updating this formula does not change an already-running TUN.
@@ -34,6 +36,6 @@ class Sakamoto < Formula
   end
 
   test do
-    assert_match "sakamoto 0.2.3", shell_output("#{bin}/sakamoto version")
+    assert_match "sakamoto 0.2.4", shell_output("#{bin}/sakamoto version")
   end
 end
