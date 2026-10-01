@@ -1,8 +1,8 @@
 class Sakamoto < Formula
   desc "Mouse-friendly macOS sing-box TUI with Shadowrocket config import"
   homepage "https://github.com/pi-dal/sakamoto"
-  url "https://github.com/pi-dal/sakamoto/archive/refs/tags/v0.2.6.tar.gz"
-  sha256 "a899cf90679d6e12dda73237b38e212829b8536d4f39a4393c29011d6a7369f2"
+  url "https://github.com/pi-dal/sakamoto/archive/refs/tags/v0.2.7.tar.gz"
+  sha256 "7d1f59cf5ac2b072cc89e29aceabd53634934947bbb78e859a663e31cac5252f"
   license "GPL-3.0-or-later"
 
   depends_on "go@1.26" => :build
@@ -29,8 +29,11 @@ class Sakamoto < Formula
       rules. Updating this formula does not change an already-running TUN.
       For a new setup, copy the examples from #{pkgshare} into ~/.sakamoto,
       configure your own rules/nodes and a random API secret, then run:
-        bash #{pkgshare}/scripts/install-macos.sh
-      This installer explicitly asks permission before adding launchd services.
+        sakamoto setup --check
+        sakamoto setup
+      Setup explicitly asks permission before adding launchd services.
+      Launchd starts only the services; after reboot, manually reconnect
+      the TUN and verify protected DNS. Setup never auto-connects a VPN.
       Existing legacy VPN sessions must be migrated separately; do not replace
       a running daemon. See #{pkgshare}/scripts/migrate-legacy.sh --check.
       The About portrait's CC BY 2.0 credits are in #{pkgshare}/NOTICE.md and
@@ -39,6 +42,6 @@ class Sakamoto < Formula
   end
 
   test do
-    assert_match "sakamoto 0.2.6", shell_output("#{bin}/sakamoto version")
+    assert_match "sakamoto 0.2.7", shell_output("#{bin}/sakamoto version")
   end
 end
