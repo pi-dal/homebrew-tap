@@ -1,8 +1,8 @@
 class Sakamoto < Formula
   desc "Mouse-friendly macOS sing-box TUI with Shadowrocket config import"
   homepage "https://github.com/pi-dal/sakamoto"
-  url "https://github.com/pi-dal/sakamoto/archive/refs/tags/v0.2.7.tar.gz"
-  sha256 "7d1f59cf5ac2b072cc89e29aceabd53634934947bbb78e859a663e31cac5252f"
+  url "https://github.com/pi-dal/sakamoto/archive/refs/tags/v0.2.8.tar.gz"
+  sha256 "94b0362f51a1f88403a16cba4a811d05097443a15b4ed36c371f111d925ab886"
   license "GPL-3.0-or-later"
 
   depends_on "go@1.26" => :build
