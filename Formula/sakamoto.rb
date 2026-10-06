@@ -1,8 +1,8 @@
 class Sakamoto < Formula
   desc "Mouse-friendly macOS sing-box TUI with Shadowrocket config import"
   homepage "https://github.com/pi-dal/sakamoto"
-  url "https://github.com/pi-dal/sakamoto/archive/refs/tags/v0.2.11.tar.gz"
-  sha256 "72700aa5c000d702bf313e3ec9a0a1b63f1527be4d374512d00ee18d3f078e9d"
+  url "https://github.com/pi-dal/sakamoto/archive/refs/tags/v0.2.12.tar.gz"
+  sha256 "46fe48e4c3cce80ae5644351cb772bb3c016af94f06d559350fe540132ce203b"
   license "GPL-3.0-or-later"
 
   depends_on "go@1.26" => :build
@@ -13,7 +13,7 @@ class Sakamoto < Formula
     system "go", "build", *std_go_args(output: bin/"sakamoto", ldflags: "-s -w"), "./cmd/sakamoto"
     system "codesign", "--force", "--sign", "-", bin/"sakamoto"
     pkgshare.install "sakamoto.example.yaml", "nodes.example.txt", "scripts", "launchd", "NOTICE.md"
-    pkgshare.install "docs/portrait-license.md", "docs/dns-protection.md"
+    pkgshare.install "docs/portrait-license.md", "docs/dns-protection.md", "docs/s3-sync.md"
   end
 
   def caveats
@@ -42,6 +42,6 @@ class Sakamoto < Formula
   end
 
   test do
-    assert_match "sakamoto 0.2.7", shell_output("#{bin}/sakamoto version")
+    assert_match "sakamoto 0.2.12", shell_output("#{bin}/sakamoto version")
   end
 end
