@@ -12,7 +12,9 @@ jobs:
       - name: Refresh Homebrew metadata (runner images can be stale)
         run: brew update
       - name: Tap checked-out repository
-        run: brew tap --custom-remote pi-dal/tap "file://${{ github.workspace }}"
+        run: |
+          brew tap --custom-remote pi-dal/tap "file://${{ github.workspace }}"
+          if brew command trust >/dev/null 2>&1; then brew trust pi-dal/tap; fi
       - name: Audit and style
         run: |
           brew audit --strict pi-dal/tap/sakamoto pi-dal/tap/voicepi pi-dal/tap/agent-explorer
