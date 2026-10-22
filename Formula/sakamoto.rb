@@ -1,8 +1,8 @@
 class Sakamoto < Formula
   desc "Mouse-friendly macOS sing-box TUI with Shadowrocket config import"
   homepage "https://github.com/pi-dal/sakamoto"
-  url "https://github.com/pi-dal/sakamoto/archive/refs/tags/v0.2.16.tar.gz"
-  sha256 "ed15f9b3471b493612038882fa443f2350136854f8073de3b07ec99aafd835b3"
+  url "https://github.com/pi-dal/sakamoto/archive/refs/tags/v0.2.17.tar.gz"
+  sha256 "ca16e6d2a7515af62b0aeebc1bcaa61d0506d40bc6623f27e2df07d34d6ac148"
   license "GPL-3.0-or-later"
 
   depends_on "go@1.26" => :build
@@ -18,7 +18,8 @@ class Sakamoto < Formula
     system "codesign", "--force", "--sign", "-", bin/"sakamoto"
     pkgshare.install "sakamoto.example.yaml", "nodes.example.txt", "scripts", "launchd", "NOTICE.md"
     pkgshare.install "docs/portrait-license.md", "docs/dns-protection.md", "docs/s3-sync.md",
-                     "docs/icloud.md", "docs/routing-sync-latency.md"
+                     "docs/icloud.md", "docs/routing-sync-latency.md", "docs/desktop-learning.md",
+                     "docs/configuration.md"
   end
 
   def caveats
@@ -32,6 +33,11 @@ class Sakamoto < Formula
       Requires sing-box 1.14.2+ for native Global/Direct modes.
       Existing configs need regeneration and one planned reconnect to load mode
       rules. Updating this formula does not change an already-running TUN.
+      Automatic learning now hot-loads verified rules without restarting the TUN.
+      Regenerate and explicitly reconnect once to prepare its rule slot; older
+      or unapplied configurations report deferred. Update the existing watcher
+      LaunchAgent to the new binary before reloading it; running jobs retain
+      their previous code. See #{pkgshare}/desktop-learning.md.
       For a new setup, copy the examples from #{pkgshare} into ~/.sakamoto,
       configure your own rules/nodes and a random API secret, then run:
         sakamoto setup --check
@@ -47,6 +53,6 @@ class Sakamoto < Formula
   end
 
   test do
-    assert_match "sakamoto 0.2.16", shell_output("#{bin}/sakamoto version")
+    assert_match "sakamoto 0.2.17", shell_output("#{bin}/sakamoto version")
   end
 end
