@@ -1,8 +1,8 @@
 class Sakamoto < Formula
   desc "Mouse-friendly macOS sing-box TUI with Shadowrocket config import"
   homepage "https://github.com/pi-dal/sakamoto"
-  url "https://github.com/pi-dal/sakamoto/archive/refs/tags/v0.2.17.tar.gz"
-  sha256 "ca16e6d2a7515af62b0aeebc1bcaa61d0506d40bc6623f27e2df07d34d6ac148"
+  url "https://github.com/pi-dal/sakamoto/archive/refs/tags/v0.2.18.tar.gz"
+  sha256 "59399d4324a8e62c72b919ec2739503687d0c8adc1bca662d11100b2f46083c6"
   license "GPL-3.0-or-later"
 
   depends_on "go@1.26" => :build
@@ -16,15 +16,27 @@ class Sakamoto < Formula
     end
     system "go", "build", *std_go_args(output: bin/"sakamoto", ldflags: "-s -w"), *gcflags, "./cmd/sakamoto"
     system "codesign", "--force", "--sign", "-", bin/"sakamoto"
+    ENV["CGO_ENABLED"] = "0"
+    system "go", "build", "-trimpath", "-ldflags=-s -w -X main.version=#{version}",
+           "-o", "scripts/sakamoto-rescue", "./cmd/sakamoto-rescue"
+    system "codesign", "--force", "--sign", "-", "scripts/sakamoto-rescue"
+    system "codesign", "--verify", "--strict", "scripts/sakamoto-rescue"
+    ENV["CGO_ENABLED"] = "1"
     pkgshare.install "sakamoto.example.yaml", "nodes.example.txt", "scripts", "launchd", "NOTICE.md"
     pkgshare.install "docs/portrait-license.md", "docs/dns-protection.md", "docs/s3-sync.md",
                      "docs/icloud.md", "docs/routing-sync-latency.md", "docs/desktop-learning.md",
-                     "docs/configuration.md"
+                     "docs/configuration.md", "docs/stability-recovery.md", "docs/mobile-stability-recovery.md"
   end
 
   def caveats
     <<~EOS
       No VPN or privileged launchd service was started; system DNS was not changed.
+      Check and repair a core crash with sakamoto repair; --check is read-only.
+      Install the independent offline rescue helper while healthy:
+        sakamoto rescue-install --check
+        sakamoto rescue-install
+      Running services keep their old code until separately upgraded. Inspect
+      capabilities with sakamoto doctor and read #{pkgshare}/stability-recovery.md.
       Protected DNS requires an explicit root-daemon upgrade/activation:
         bash #{pkgshare}/scripts/enable-dns-guard.sh
       Read #{pkgshare}/dns-protection.md before scheduling that reconnect.
@@ -53,6 +65,7 @@ class Sakamoto < Formula
   end
 
   test do
-    assert_match "sakamoto 0.2.17", shell_output("#{bin}/sakamoto version")
+    assert_match "sakamoto 0.2.18", shell_output("#{bin}/sakamoto version")
+    assert_match "sakamoto-rescue 0.2.18", shell_output("#{pkgshare}/scripts/sakamoto-rescue version")
   end
 end
