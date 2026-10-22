@@ -27,3 +27,13 @@ jobs:
           test -f "$(brew --prefix)/share/sakamoto/launchd/dev.sakamoto.daemon.plist.in"
           test -f "$(brew --prefix)/share/sakamoto/NOTICE.md"
           test -f "$(brew --prefix)/share/sakamoto/portrait-license.md"
+      - name: Verify desktop cask when published
+        if: hashFiles('Casks/sakamoto-desktop.rb') != ''
+        run: |
+          brew audit --cask --strict --online pi-dal/tap/sakamoto-desktop
+          brew style --cask pi-dal/tap/sakamoto-desktop
+          brew install --cask pi-dal/tap/sakamoto-desktop
+          codesign --verify --deep --strict /Applications/Sakamoto.app
+          codesign --display --verbose=4 /Applications/Sakamoto.app 2>&1 | rg -q 'TeamIdentifier=6Y2YB464VU'
+          xcrun stapler validate /Applications/Sakamoto.app
+          spctl --assess --type execute --verbose=4 /Applications/Sakamoto.app

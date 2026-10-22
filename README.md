@@ -28,6 +28,24 @@ Install the macOS 14+ menu-bar app from [VoicePi](https://github.com/pi-dal/Voic
 brew install --cask pi-dal/tap/voicepi
 ```
 
+## Sakamoto desktop
+
+The application repository's [desktop release workflow](https://github.com/pi-dal/sakamoto/blob/main/.github/workflows/desktop-release.yml)
+will generate `Casks/sakamoto-desktop.rb` from the public arm64 and Intel ZIPs
+only after Developer ID signing, Apple notarization and verification of the
+stapled downloads. The first release awaits an Account Holder-issued certificate.
+Once that cask is published, the GUI install command is:
+
+```bash
+brew install --cask pi-dal/tap/sakamoto-desktop
+```
+
+This is independent of the CLI formula. Installing the app does not start a
+tunnel, install privileged services or delete configuration. The tap CI audits
+and installs the cask, checks its signature and notarization ticket, and does
+not launch it. A dedicated deploy key allows the release job to update only
+this tap.
+
 ## sakamoto
 
 A macOS terminal controller for [sing-box](https://github.com/SagerNet/sing-box), with Shadowrocket `.conf` import. Source, documentation, and license: [pi-dal/sakamoto](https://github.com/pi-dal/sakamoto).
