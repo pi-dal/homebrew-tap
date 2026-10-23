@@ -38,13 +38,15 @@ jobs:
           brew style --cask pi-dal/tap/sakamoto-desktop
           brew install --cask pi-dal/tap/sakamoto-desktop
           codesign --verify --deep --strict /Applications/Sakamoto.app
-          codesign --display --verbose=4 /Applications/Sakamoto.app 2>&1 | rg -q 'TeamIdentifier=6Y2YB464VU'
+          codesign --display --verbose=4 /Applications/Sakamoto.app 2>&1 | grep -q 'TeamIdentifier=6Y2YB464VU'
           # Use the signed bundle's bounded ticket-delivery retry; never bypass
           # validation or launch the GUI/service during install verification.
-          python3 - <<'PY'
+          # -B keeps validation from adding bytecode to the signed bundle.
+          python3 -B - <<'PY'
           import sys
           sys.path.insert(0, "/Applications/Sakamoto.app/Contents/Resources/cli/scripts")
           from macos_release_tools import stapler
           stapler("validate", "/Applications/Sakamoto.app")
           PY
+          codesign --verify --deep --strict /Applications/Sakamoto.app
           spctl --assess --type execute --verbose=4 /Applications/Sakamoto.app
