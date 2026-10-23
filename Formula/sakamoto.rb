@@ -1,8 +1,8 @@
 class Sakamoto < Formula
   desc "Mouse-friendly macOS sing-box TUI with Shadowrocket config import"
   homepage "https://github.com/pi-dal/sakamoto"
-  url "https://github.com/pi-dal/sakamoto/archive/refs/tags/v0.2.18.tar.gz"
-  sha256 "59399d4324a8e62c72b919ec2739503687d0c8adc1bca662d11100b2f46083c6"
+  url "https://github.com/pi-dal/sakamoto/archive/refs/tags/v0.2.21.tar.gz"
+  sha256 "51cd40160bc30737a6a04312021e45299529fedb04603c1b63d6ebf6c36ceaf6"
   license "GPL-3.0-or-later"
 
   depends_on "go@1.26" => :build
@@ -25,18 +25,23 @@ class Sakamoto < Formula
     pkgshare.install "sakamoto.example.yaml", "nodes.example.txt", "scripts", "launchd", "NOTICE.md"
     pkgshare.install "docs/portrait-license.md", "docs/dns-protection.md", "docs/s3-sync.md",
                      "docs/icloud.md", "docs/routing-sync-latency.md", "docs/desktop-learning.md",
-                     "docs/configuration.md", "docs/stability-recovery.md", "docs/mobile-stability-recovery.md"
+                     "docs/configuration.md", "docs/configuration-repair.md", "docs/stability-recovery.md",
+                     "docs/mobile-stability-recovery.md"
   end
 
   def caveats
     <<~EOS
       No VPN or privileged launchd service was started; system DNS was not changed.
       Check and repair a core crash with sakamoto repair; --check is read-only.
+      Configuration recovery supports repair --fallback or --regenerate; add
+      --restart to approve replacement of a running core. See
+      #{pkgshare}/configuration-repair.md.
       Install the independent offline rescue helper while healthy:
         sakamoto rescue-install --check
         sakamoto rescue-install
       Running services keep their old code until separately upgraded. Inspect
-      capabilities with sakamoto doctor and read #{pkgshare}/stability-recovery.md.
+      capabilities with sakamoto doctor. Use service-update --check to inspect
+      the canonical supervisor; --reconnect requests a locally confirmed update.
       Protected DNS requires an explicit root-daemon upgrade/activation:
         bash #{pkgshare}/scripts/enable-dns-guard.sh
       Read #{pkgshare}/dns-protection.md before scheduling that reconnect.
@@ -57,15 +62,17 @@ class Sakamoto < Formula
       Setup explicitly asks permission before adding launchd services.
       Launchd starts only the services; after reboot, manually reconnect
       the TUN and verify protected DNS. Setup never auto-connects a VPN.
-      Existing legacy VPN sessions must be migrated separately; do not replace
-      a running daemon. See #{pkgshare}/scripts/migrate-legacy.sh --check.
+      Unidentified legacy job labels need the separate migration procedure:
+      #{pkgshare}/scripts/migrate-legacy.sh --check.
       The About portrait's CC BY 2.0 credits are in #{pkgshare}/NOTICE.md and
       #{pkgshare}/portrait-license.md.
     EOS
   end
 
   test do
-    assert_match "sakamoto 0.2.18", shell_output("#{bin}/sakamoto version")
-    assert_match "sakamoto-rescue 0.2.18", shell_output("#{pkgshare}/scripts/sakamoto-rescue version")
+    assert_match "sakamoto 0.2.21", shell_output("#{bin}/sakamoto version")
+    assert_match "sakamoto-rescue 0.2.21", shell_output("#{pkgshare}/scripts/sakamoto-rescue version")
+    assert_match "service-update --check", shell_output("#{bin}/sakamoto help")
+    assert_path_exists pkgshare/"configuration-repair.md"
   end
 end
