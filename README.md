@@ -33,7 +33,7 @@ brew install --cask pi-dal/tap/voicepi
 The application repository's [desktop release workflow](https://github.com/pi-dal/sakamoto/blob/main/.github/workflows/desktop-release.yml)
 will generate `Casks/sakamoto-desktop.rb` from the public arm64 and Intel ZIPs
 only after Developer ID signing, Apple notarization and verification of the
-stapled downloads. The first release awaits an Account Holder-issued certificate.
+stapled downloads. The cask becomes available after a signed release completes.
 Once that cask is published, the GUI install command is:
 
 ```bash
