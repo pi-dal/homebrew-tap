@@ -1,8 +1,8 @@
 class Sakamoto < Formula
   desc "Mouse-friendly macOS sing-box TUI with Shadowrocket config import"
   homepage "https://github.com/pi-dal/sakamoto"
-  url "https://github.com/pi-dal/sakamoto/archive/refs/tags/v0.2.21.tar.gz"
-  sha256 "51cd40160bc30737a6a04312021e45299529fedb04603c1b63d6ebf6c36ceaf6"
+  url "https://github.com/pi-dal/sakamoto/archive/refs/tags/v0.2.26.tar.gz"
+  sha256 "4a68ba25fee8e547d73dfa9e8f8684c0ecfe3602746a252a1910706d1ea2fee3"
   license "GPL-3.0-or-later"
 
   depends_on "go@1.26" => :build
@@ -26,7 +26,7 @@ class Sakamoto < Formula
     pkgshare.install "docs/portrait-license.md", "docs/dns-protection.md", "docs/s3-sync.md",
                      "docs/icloud.md", "docs/routing-sync-latency.md", "docs/desktop-learning.md",
                      "docs/configuration.md", "docs/configuration-repair.md", "docs/stability-recovery.md",
-                     "docs/mobile-stability-recovery.md"
+                     "docs/mobile-stability-recovery.md", "docs/proxy-chain.md"
   end
 
   def caveats
