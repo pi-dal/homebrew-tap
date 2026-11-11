@@ -70,8 +70,8 @@ class Sakamoto < Formula
   end
 
   test do
-    assert_match "sakamoto 0.2.21", shell_output("#{bin}/sakamoto version")
-    assert_match "sakamoto-rescue 0.2.21", shell_output("#{pkgshare}/scripts/sakamoto-rescue version")
+    assert_match "sakamoto #{version}", shell_output("#{bin}/sakamoto version")
+    assert_match "sakamoto-rescue #{version}", shell_output("#{pkgshare}/scripts/sakamoto-rescue version")
     assert_match "service-update --check", shell_output("#{bin}/sakamoto help")
     assert_path_exists pkgshare/"configuration-repair.md"
   end
