@@ -1,9 +1,9 @@
 cask "sakamoto-desktop" do
   arch arm: "arm64", intel: "amd64"
 
-  version "0.2.28"
-  sha256 arm:   "ffce729b2f332d93e7aa181267399bae756973dba5170218dd38e1663b173c9d",
-         intel: "79580d3d1eeb2157e14ec9607a84016d91f753102c64560a5f71ae57b25a5a2f"
+  version "0.2.29"
+  sha256 arm:   "dfe27fb8654b795f53ea45f2aa1b4cdf4095269e5093d80c7151b80bcdd4a66c",
+         intel: "1fd945073f1144ca24f52723fd5dae99368f8c0a02288d65c04ff97c86582dff"
 
   url "https://github.com/pi-dal/sakamoto/releases/download/desktop-v#{version}/sakamoto-menubar-v#{version}-darwin-#{arch}.zip"
   name "Sakamoto"
